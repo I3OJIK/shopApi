@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Services\Auth\AuthService;
+use App\Services\Auth\CookieService;
+use Illuminate\Http\Response;
+
+class AuthController extends Controller
+{
+    public function __construct(
+        protected AuthService $authService,
+        protected CookieService $cookieService
+    )
+    {}
+
+    public function login(LoginRequest $request): Response
+    {
+        try {
+            $data = $request->validated();
+            $jwtTokens =$this->authService->login($data['email'],$data['password']);
+            // создание куки для ревреш токена
+            $cookie = $this->cookieService->makeRefreshCookie($jwtTokens['refreshToken']);
+            
+            return new Response(['access_token' => $jwtTokens['accessToken']])->cookie($cookie);
+        } catch(\Exception $e){
+            
+            return new Response(['errors' => $e->getMessage()],$e->getCode());
+        }
+        
+    }
+}
