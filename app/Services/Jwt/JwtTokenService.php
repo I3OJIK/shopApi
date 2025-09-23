@@ -3,7 +3,11 @@ namespace App\Services\Jwt;
 
 use App\Models\Token;
 use App\Models\User;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
+use stdClass;
 
 class JwtTokenService
 {
@@ -15,7 +19,7 @@ class JwtTokenService
     public function __construct()
     {
         $this->secret     = env('JWT_SECRET', 'secret');
-        $this->accessTtl  = (int) env('JWT_ACCESS_TTL', 3600);
+        $this->accessTtl  = (int) env('JWT_ACCESS_TTL', 600);
         $this->refreshTtl = (int) env('JWT_REFRESH_TTL', 2592000);
     }
 
@@ -32,6 +36,7 @@ class JwtTokenService
         $payload = [
             'sub' => $user->id,
             'email' => $user->email,
+            'role' => $user->role,
             'iat' => time(),
             'exp' => time() + $this->accessTtl,
         ];
@@ -50,6 +55,8 @@ class JwtTokenService
     {
         $payload = [
             'sub' => $user->id,
+            'email' => $user->email,
+            'role' => $user->role,
             'iat' => time(),
             'exp' => time() + $this->refreshTtl,
         ];
@@ -86,6 +93,21 @@ class JwtTokenService
             ['user_id' => $id],
             ['refresh_token' => $refreshToken]
         );
+    }
+
+    public function validateToken(string $token): stdClass
+    {
+        try{
+
+            $payload = JWT::decode($token, new Key( env('JWT_SECRET', 'secret'), 'HS256'));
+            return $payload;
+        } catch (ExpiredException $e) {
+            return throw new \Exception($e->getMessage(), 401);
+        } catch (SignatureInvalidException $e) {
+            return throw new \Exception($e->getMessage(), 401);
+        } catch (\UnexpectedValueException $e) {
+            return throw new \Exception($e->getMessage(), 400);
+        }
     }
 
 }

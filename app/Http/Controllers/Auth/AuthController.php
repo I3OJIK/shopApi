@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\Auth\AuthService;
 use App\Services\Auth\CookieService;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
@@ -16,6 +19,13 @@ class AuthController extends Controller
     )
     {}
 
+    /**
+     * Авторизация пользователя
+     * 
+     * @param LoginRequest $request
+     * 
+     * @return Response
+     */
     public function login(LoginRequest $request): Response
     {
         try {
@@ -29,6 +39,13 @@ class AuthController extends Controller
             
             return new Response(['errors' => $e->getMessage()],$e->getCode());
         }
+        
+    }
+
+
+    public function logout(Request $request)
+    {
+        dd($request->attributes->get('jwt_payload'));
         
     }
 }

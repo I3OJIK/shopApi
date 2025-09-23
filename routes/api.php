@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 
-Route::post('login', [AuthController::class,'login']);
+Route::middleware('jwt.auth')->group(function() {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('me', [AuthController::class, 'me']);
+});
+
 Route::group([], function() {
-    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('login', [AuthController::class,'login']);
     Route::post('refresh', [AuthController::class,'refresh']);
-    Route::post('me', [AuthController::class,'me']);
 });

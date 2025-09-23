@@ -29,4 +29,9 @@ class AuthService
             return $jwtTokens;
     }
 
+    public function logout(string $token)
+    {
+        
+    }
+
 }
