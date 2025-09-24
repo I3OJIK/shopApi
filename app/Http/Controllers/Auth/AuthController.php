@@ -34,18 +34,51 @@ class AuthController extends Controller
             // создание куки для ревреш токена
             $cookie = $this->cookieService->makeRefreshCookie($jwtTokens['refreshToken']);
             
-            return new Response(['access_token' => $jwtTokens['accessToken']])->cookie($cookie);
+            return new Response(['access_token' => $jwtTokens['accessToken']])->withCookie($cookie);
+        } catch(\Exception $e){
+            
+            return new Response(['errors' => $e->getMessage()],$e->getCode());
+        } 
+        
+    }
+
+
+    public function logout(Request $request): Response
+    {
+        try {
+            $payload = $request->attributes->get('jwt_payload');
+            $this->authService->logout($payload->sub);
+            return new Response(['message' => 'Logged out successfully'])->withoutCookie('refresh_token');
         } catch(\Exception $e){
             
             return new Response(['errors' => $e->getMessage()],$e->getCode());
         }
-        
     }
 
-
-    public function logout(Request $request)
+    public function refresh(Request $request): Response
     {
-        dd($request->attributes->get('jwt_payload'));
-        
+        try {
+            $refreshToken = $request->cookie('refresh_token');
+            if(!$refreshToken){
+                throw new \Exception("Refresh token is null", 401);
+            }
+            $token = $this->authService->refresh($refreshToken);
+            return new Response(['access_token' => $token]);
+        } catch(\Exception $e){
+            
+            return new Response(['error' => $e->getMessage()],$e->getCode());
+        }
     }
+
+    public function me(Request $request): Response
+    {
+        try {
+            $user = $request->user();
+            return new Response(['user' => $user]);
+        } catch(\Exception $e){
+            
+            return new Response(['error' => $e->getMessage()],$e->getCode());
+        }
+    }
+
 }

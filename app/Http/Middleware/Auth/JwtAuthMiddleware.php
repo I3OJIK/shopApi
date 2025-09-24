@@ -26,8 +26,11 @@ class JwtAuthMiddleware
         }
 
         try {
-            $payload = $this->jwt->validateToken($token);
+            $payload = $this->jwt->validateAccessToken($token);
             $request->attributes->set('jwt_payload', $payload);
+            $request->setUserResolver(function () use ($payload) {
+                return User::find($payload->sub);
+            });
         } catch (\Exception $e) {
 
             return new Response(['error' => $e->getMessage()],$e->getCode());

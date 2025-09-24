@@ -37,6 +37,7 @@ class JwtTokenService
             'sub' => $user->id,
             'email' => $user->email,
             'role' => $user->role,
+            'type' => 'access',
             'iat' => time(),
             'exp' => time() + $this->accessTtl,
         ];
@@ -57,6 +58,7 @@ class JwtTokenService
             'sub' => $user->id,
             'email' => $user->email,
             'role' => $user->role,
+            'type' => 'refresh',
             'iat' => time(),
             'exp' => time() + $this->refreshTtl,
         ];
@@ -95,19 +97,72 @@ class JwtTokenService
         );
     }
 
-    public function validateToken(string $token): stdClass
+    /**
+     * Првоерка access токена на валидность
+     * 
+     * @param string $token
+     * 
+     * @return stdClass
+     */
+    public function validateAccessToken(string $token): stdClass
     {
         try{
 
-            $payload = JWT::decode($token, new Key( env('JWT_SECRET', 'secret'), 'HS256'));
+            $payload = JWT::decode($token, new Key( env('JWT_SECRET'), 'HS256'));
             return $payload;
         } catch (ExpiredException $e) {
-            return throw new \Exception($e->getMessage(), 401);
+            throw new \Exception($e->getMessage(), 401);
         } catch (SignatureInvalidException $e) {
-            return throw new \Exception($e->getMessage(), 401);
+            throw new \Exception($e->getMessage(), 401);
         } catch (\UnexpectedValueException $e) {
-            return throw new \Exception($e->getMessage(), 400);
+            throw new \Exception($e->getMessage(), 400);
         }
     }
 
+    /**
+     * валидация рефреш токена
+     * 
+     * @param string $refreshToken
+     * 
+     * @return stdClass
+     */
+    public function validateRefreshToken(string $refreshToken): stdClass
+    {
+        try{
+
+            $payload = JWT::decode($refreshToken, new Key( env('JWT_SECRET'), 'HS256'));
+            $storedToken = Token::where('user_id', $payload->sub)->first();
+            // Проверка типа токена
+            if (!isset($payload->type) || $payload->type !== 'refresh') {
+                throw new \Exception('Invalid token type', 401);
+            }
+            if (!$storedToken || $storedToken->refresh_token !== $refreshToken) {
+                throw new \Exception('Refresh token not found in database', 401);
+            }
+
+            return $payload;
+        } catch (ExpiredException $e) {
+            throw new \Exception($e->getMessage(), 401);
+        } catch (SignatureInvalidException $e) {
+            throw new \Exception($e->getMessage(), 401);
+        } catch (\UnexpectedValueException $e) {
+            throw new \Exception($e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Удаление рефреш токена
+     * 
+     * @param int $userId
+     * 
+     * @return void
+     */
+    public function deleteToken(int $userId): void
+    {
+            $result = Token::where('user_id', $userId)->delete();
+
+            if($result == 0){
+                throw new \Exception('Token not found', 400);
+            }
+    }
 }

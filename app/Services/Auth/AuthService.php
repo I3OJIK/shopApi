@@ -3,6 +3,7 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 use App\Services\Jwt\JwtTokenService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService
@@ -29,9 +30,16 @@ class AuthService
             return $jwtTokens;
     }
 
-    public function logout(string $token)
+    public function logout(int $userId)
     {
-        
+        $this->jwt->deleteToken($userId);
     }
 
+    public function refresh(string $refreshToken): ?string
+    {
+        $payload = $this->jwt->validateRefreshToken($refreshToken);
+        $user = User::find($payload->sub);
+        $accessToken = $this->jwt->generateAccessToken($user);
+        return $accessToken;
+    }
 }
