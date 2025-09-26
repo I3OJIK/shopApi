@@ -5,6 +5,9 @@ namespace App\Http\Middleware\Auth;
 use App\Models\User;
 use App\Services\Jwt\JwtTokenService;
 use Closure;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -17,12 +20,12 @@ class JwtAuthMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): JsonResponse|Response
     {
         $token = $request->bearerToken();
 
         if(!$token){
-            return new Response(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
+            return  response()->json(['error' => 'Token is null'], Response::HTTP_UNAUTHORIZED);
         }
 
         try {
@@ -31,9 +34,12 @@ class JwtAuthMiddleware
             $request->setUserResolver(function () use ($payload) {
                 return User::find($payload->sub);
             });
-        } catch (\Exception $e) {
-
-            return new Response(['error' => $e->getMessage()],$e->getCode());
+        } catch (ExpiredException $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
+        } catch (SignatureInvalidException $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        } catch (\UnexpectedValueException $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
         }
         return $next($request);
     }

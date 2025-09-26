@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Auth;
 
+use App\Exceptions\InvalidPasswordException;
 use App\Models\User;
 use App\Services\Jwt\JwtTokenService;
 use Illuminate\Http\Request;
@@ -14,12 +15,9 @@ class AuthService
     public function login(string $email, string $password): array
     {
         $user = User::where('email',$email)->first();
-            if(!$user){
-                throw new \Exception('Email not found', 404);
-            }
 
             if(!Hash::check($password,$user->password)){
-                throw new \Exception('Invalid password', 400);
+                throw new InvalidPasswordException();
             }
             // Генерация пары токенов
             $jwtTokens = $this->jwt->generateTokenPair($user);

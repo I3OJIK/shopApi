@@ -7,19 +7,17 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::prefix('auth')->group(function () {
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-Route::post('register', [RegistrationController::class, 'register']);
-
-Route::middleware('jwt.auth')->group(function() {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('me', [AuthController::class, 'me']);
-});
-
-Route::group([], function() {
+    // Роут без авторизации
     Route::post('login', [AuthController::class,'login']);
     Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('register', [RegistrationController::class, 'register']);
+
+    // Роуты, требующие JWT
+    Route::middleware('jwt.auth')->group(function() {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('me', [AuthController::class, 'me']);
+    });
+
 });

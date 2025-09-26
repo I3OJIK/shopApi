@@ -17,7 +17,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'    => ['required', 'email'],
+            'email'    => ['required', 'email','exists:users,email'],
             'password' => ['required', 'string', 'min:6'],
         ];
     }
@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
         throw new HttpResponseException(
             response()->json([
                 'errors' => $validator->getMessageBag(),
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY) // 422
+            ], 422) 
         );
     }
 }

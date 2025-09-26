@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Jwt;
 
+use App\Exceptions\RefreshTokenNotFoundException;
 use App\Models\Token;
 use App\Models\User;
 use Firebase\JWT\ExpiredException;
@@ -106,17 +107,8 @@ class JwtTokenService
      */
     public function validateAccessToken(string $token): stdClass
     {
-        try{
-
-            $payload = JWT::decode($token, new Key( env('JWT_SECRET'), 'HS256'));
-            return $payload;
-        } catch (ExpiredException $e) {
-            throw new \Exception($e->getMessage(), 401);
-        } catch (SignatureInvalidException $e) {
-            throw new \Exception($e->getMessage(), 401);
-        } catch (\UnexpectedValueException $e) {
-            throw new \Exception($e->getMessage(), 400);
-        }
+        $payload = JWT::decode($token, new Key( env('JWT_SECRET'), 'HS256'));
+        return $payload;
     }
 
     /**
@@ -128,26 +120,13 @@ class JwtTokenService
      */
     public function validateRefreshToken(string $refreshToken): stdClass
     {
-        try{
-
             $payload = JWT::decode($refreshToken, new Key( env('JWT_SECRET'), 'HS256'));
             $storedToken = Token::where('user_id', $payload->sub)->first();
-            // Проверка типа токена
-            if (!isset($payload->type) || $payload->type !== 'refresh') {
-                throw new \Exception('Invalid token type', 401);
-            }
-            if (!$storedToken || $storedToken->refresh_token !== $refreshToken) {
-                throw new \Exception('Refresh token not found in database', 401);
-            }
 
+            if (!$storedToken || $storedToken->refresh_token !== $refreshToken) {
+                throw new RefreshTokenNotFoundException();
+            }
             return $payload;
-        } catch (ExpiredException $e) {
-            throw new \Exception($e->getMessage(), 401);
-        } catch (SignatureInvalidException $e) {
-            throw new \Exception($e->getMessage(), 401);
-        } catch (\UnexpectedValueException $e) {
-            throw new \Exception($e->getMessage(), 400);
-        }
     }
 
     /**
@@ -159,10 +138,6 @@ class JwtTokenService
      */
     public function deleteToken(int $userId): void
     {
-            $result = Token::where('user_id', $userId)->delete();
-
-            if($result == 0){
-                throw new \Exception('Token not found', 400);
-            }
+        Token::findOrFail($userId)->delete();
     }
 }
