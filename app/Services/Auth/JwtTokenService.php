@@ -1,13 +1,11 @@
 <?php
-namespace App\Services\Jwt;
+namespace App\Services\Auth;
 
 use App\Exceptions\RefreshTokenNotFoundException;
 use App\Models\Token;
 use App\Models\User;
-use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use Firebase\JWT\SignatureInvalidException;
 use stdClass;
 
 class JwtTokenService

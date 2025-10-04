@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Data\Models\UserData;
+use App\Data\Requests\Auth\LoginData;
 use App\Exceptions\InvalidPasswordException;
 use App\Exceptions\RefreshTokenNotFoundException;
 use App\Http\Controllers\Controller;
@@ -39,19 +41,7 @@ class AuthController extends Controller
         security: [],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
-                type:"object",
-                properties:[
-                    new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email"
-                    ),
-                    new OA\Property(
-                        property: "password",
-                        type: "string",
-                        format: "password"
-                    ),
-                ]
+                ref: "#/components/schemas/LoginData"
             )
         ),
         responses:[
@@ -97,12 +87,11 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginData $data): JsonResponse
     {
         try {
-            $data = $request->validated();
-            $jwtTokens =$this->authService->login($data['email'],$data['password']);
-            // создание куки для ревреш токена
+            $jwtTokens =$this->authService->login($data->email,$data->password);
+
             $cookie = $this->cookieService->makeRefreshCookie($jwtTokens['refreshToken']);
             
             return response()->json(['access_token' => $jwtTokens['accessToken']])->withCookie($cookie);
@@ -256,7 +245,7 @@ class AuthController extends Controller
         }
     }
 
-    #[OA\Post(
+    #[OA\Get(
         path: "/api/auth/me",
         summary: "Информация о пользователе",
         description: "Информация о пользователе",
@@ -267,21 +256,7 @@ class AuthController extends Controller
                 response: Response::HTTP_OK,
                 description: "Информация об авторизованном пользователе",
                 content: new OA\JsonContent(
-                    type: "object",
-                    properties: [
-                        new OA\Property(
-                            property: "user",
-                            type: "object",
-                            properties: [
-                                new OA\Property(property: "id", type: "integer"),
-                                new OA\Property(property: "name", type: "string"),
-                                new OA\Property(property: "email", type: "string"),
-                                new OA\Property(property: "role", type: "string"),
-                                new OA\Property(property: "created_at", type: "string", format: "date-time"),
-                                new OA\Property(property: "updated_at", type: "string", format: "date-time")
-                            ]
-                        )
-                    ]
+                   ref: "#/components/schemas/UserData"
                 )
             ),
             new OA\Response(
@@ -299,10 +274,9 @@ class AuthController extends Controller
             ),
         ]
     )]
-    public function me(Request $request): JsonResponse
+    public function me(Request $request): UserData
     {
-        $user = $request->user();
-        return response()->json(['user' => $user]);
+        return UserData::from($request->user());
     }
 
 }

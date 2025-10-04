@@ -3,8 +3,7 @@ namespace App\Services\Auth;
 
 use App\Exceptions\InvalidPasswordException;
 use App\Models\User;
-use App\Services\Jwt\JwtTokenService;
-use Illuminate\Http\Request;
+use App\Services\Auth\JwtTokenService;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService

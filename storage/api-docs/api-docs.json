@@ -17,17 +17,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/LoginData"
                             }
                         }
                     }
@@ -224,47 +214,20 @@
             }
         },
         "/api/auth/me": {
-            "post": {
+            "get": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Информация о пользователе",
                 "description": "Информация о пользователе",
-                "operationId": "48337fc91254ad3a6712be5cacb7c483",
+                "operationId": "1537d2a532022d0974e4cd2d83c6a38f",
                 "responses": {
                     "200": {
                         "description": "Информация об авторизованном пользователе",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer"
-                                                },
-                                                "name": {
-                                                    "type": "string"
-                                                },
-                                                "email": {
-                                                    "type": "string"
-                                                },
-                                                "role": {
-                                                    "type": "string"
-                                                },
-                                                "created_at": {
-                                                    "type": "string",
-                                                    "format": "date-time"
-                                                },
-                                                "updated_at": {
-                                                    "type": "string",
-                                                    "format": "date-time"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/UserData"
                                 }
                             }
                         }
@@ -305,20 +268,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RegisterData"
                             }
                         }
                     }
@@ -361,6 +311,86 @@
         }
     },
     "components": {
+        "schemas": {
+            "UserData": {
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "role",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "user"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-03T12:34:56Z"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginData": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "secret123"
+                    }
+                },
+                "type": "object"
+            },
+            "RegisterData": {
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "secret123"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",

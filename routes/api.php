@@ -17,7 +17,7 @@ Route::prefix('auth')->group(function () {
     // Роуты, требующие JWT
     Route::middleware('jwt.auth')->group(function() {
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('me', [AuthController::class, 'me']);
+        Route::get('me', [AuthController::class, 'me']);
     });
 
 });

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware\Auth;
 
 use App\Models\User;
-use App\Services\Jwt\JwtTokenService;
+use App\Services\Auth\JwtTokenService;
 use Closure;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
