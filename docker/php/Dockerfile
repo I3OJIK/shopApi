@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     librabbitmq-dev \
-    libsodium-dev
-    # supervisor
+    libsodium-dev \
+    supervisor
     RUN usermod -u 1000 www-data && groupmod -g 1000 www-data    
 RUN docker-php-ext-install -j$(nproc) \
     bcmath \
@@ -28,9 +28,8 @@ RUN docker-php-ext-install -j$(nproc) \
     sockets \
     calendar
 
-# Если понадобится RabbitMQ и/или Redis
-# RUN pecl install redis && docker-php-ext-enable redis
-# RUN pecl install amqp && docker-php-ext-enable amqp
+RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install amqp && docker-php-ext-enable amqp
 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

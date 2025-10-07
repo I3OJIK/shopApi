@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('name');
         });
     }
 

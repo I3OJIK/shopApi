@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string|null $description
  * @property string $image
+ * @property int $category_id
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * 
@@ -29,6 +31,7 @@ class Product extends Model
         'name',
         'description',
         'image',
+        'category_id',
     ];
 
     public $timestamps = false;
@@ -46,8 +49,8 @@ class Product extends Model
     /**
      * Категории продукта
      */
-    public function categories(): BelongsToMany
+    public function categories(): BelongsTo
     {
-        return $this->belongsToMany(Category::class, 'category_product');
+        return $this->belongsTo(Category::class, 'category_product');
     }
 }

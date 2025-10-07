@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
             $table->string('value'); 
+
+            $table->index('value');
         });
     }
 

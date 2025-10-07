@@ -43,7 +43,7 @@ class ProductVariant extends Model
     }
 
     /**
-     * У варианта есть комбинация значений атрибутов (цвет, память и т.д.)
+     * У варианта есть комбинация значений атрибутов (цвет- синий, память -256 и т.д.)
      */
     public function attributeValues(): BelongsToMany
     {

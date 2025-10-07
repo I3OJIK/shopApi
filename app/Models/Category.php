@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id
  * @property string $name
  * @property int $parent_id
+ * @property string $description
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
@@ -28,6 +29,7 @@ class Category extends Model
         'id',
         'name',
         'parent_id',
+        'description',
         'is_active',
     ];
 
@@ -54,8 +56,8 @@ class Category extends Model
     /**
      * Продукты категории
      */
-    public function products(): BelongsToMany
+    public function products(): HasMany
     {
-        return $this->belongsToMany(Product::class, 'category_product');
+        return $this->hasMany(Product::class);
     }
 }

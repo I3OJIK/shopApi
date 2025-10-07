@@ -12,52 +12,134 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Создаём атрибуты
-        $color = Attribute::create(['name' => 'color', 'is_active' => true]);
-        $storage = Attribute::create(['name' => 'storage', 'is_active' => true]);
 
-        // Значения атрибутов
-        $red = AttributeValue::create(['attribute_id' => $color->id, 'value' => 'red', 'is_active' => true]);
-        $blue = AttributeValue::create(['attribute_id' => $color->id, 'value' => 'blue', 'is_active' => true]);
-        $gb128 = AttributeValue::create(['attribute_id' => $storage->id, 'value' => '128GB', 'is_active' => true]);
-        $gb256 = AttributeValue::create(['attribute_id' => $storage->id, 'value' => '256GB', 'is_active' => true]);
+        $products = Product::insert([
+            // Смартфоны Apple
+            [
+                'name' => 'iPhone 15 Pro',
+                'description' => 'Флагманский смартфон Apple с титановым корпусом и камерой 48 МП',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'iPhone 15', 
+                'description' => 'Стандартная модель iPhone 15 с динамическим островом',
+                'category_id' => 2
+                
+            ],
+            [
+                'name' => 'iPhone 14 Pro',
+                'description' => 'Мощный смартфон с Always-On дисплеем и камерой 48 МП',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'iPhone 14',
+                'description' => 'Популярная модель iPhone с отличной производительностью',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'iPhone SE (2022)',
+                'description' => 'Компактный смартфон в классическом дизайне',
+                'category_id' => 2
+            ],
 
-        // Создаём продукт
-        $product = Product::create([
-            'name' => 'iPhone 15',
-            'description' => 'Новейший iPhone 15 с разными цветами и памятью',
+            // Смартфоны Samsung
+            [
+                'name' => 'Samsung Galaxy S23 Ultra',
+                'description' => 'Флагман Samsung с S-Pen и 200 МП камерой',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Samsung Galaxy S23+',
+                'description' => 'Мощный смартфон с большим экраном и быстрой зарядкой',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Samsung Galaxy S23',
+                'description' => 'Компактный флагман с отличной эргономикой',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Samsung Galaxy Z Fold5',
+                'description' => 'Складной смартфон с большим экраном',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Samsung Galaxy Z Flip5',
+                'description' => 'Складной смартфон-раскладушка',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Samsung Galaxy A54',
+                'description' => 'Бюджетный смартфон с хорошей камерой',
+                'category_id' => 2
+            ],
+
+            // Смартфоны Xiaomi
+            [
+                'name' => 'Xiaomi 13 Pro',
+                'description' => 'Флагман Xiaomi с камерой Leica',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Xiaomi 13',
+                'description' => 'Компактный флагман от Xiaomi',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Xiaomi Redmi Note 12 Pro',
+                'description' => 'Популярный смартфон среднего класса',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Xiaomi Poco F5',
+                'description' => 'Игровой смартфон с мощным процессором',
+                'category_id' => 2
+            ],
+
+            // Смартфоны Google
+            [
+                'name' => 'Google Pixel 8 Pro',
+                'description' => 'Смартфон Google с лучшей камерой на рынке',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Google Pixel 8',
+                'description' => 'Компактный Pixel с чистым Android',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Google Pixel 7a',
+                'description' => 'Бюджетная версия Pixel с отличной камерой',
+                'category_id' => 2
+            ],
+
+            // Другие бренды
+            [
+                'name' => 'OnePlus 11',
+                'description' => 'Флагман с быстрой зарядкой 100W',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Nothing Phone (2)',
+                'description' => 'Уникальный дизайн со светодиодной подсветкой',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Realme GT 3',
+                'description' => 'Игровой смартфон с зарядкой 240W',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Vivo X90 Pro',
+                'description' => 'Флагман с камерой Zeiss',
+                'category_id' => 2
+            ],
+            [
+                'name' => 'Oppo Find X6 Pro',
+                'description' => 'Мощный смартфон с ярким дисплеем',
+                'category_id' => 2
+            ],
         ]);
 
-        // Создаём варианты
-        $variant1 = ProductVariant::create([
-            'product_id' => $product->id,
-            'sku' => 'IP15-R128',
-            'price' => 1000,
-            'stock' => 10,
-        ]);
-        $variant2 = ProductVariant::create([
-            'product_id' => $product->id,
-            'sku' => 'IP15-R256',
-            'price' => 1100,
-            'stock' => 5,
-        ]);
-        $variant3 = ProductVariant::create([
-            'product_id' => $product->id,
-            'sku' => 'IP15-B128',
-            'price' => 1000,
-            'stock' => 7,
-        ]);
-        $variant4 = ProductVariant::create([
-            'product_id' => $product->id,
-            'sku' => 'IP15-B256',
-            'price' => 1100,
-            'stock' => 3,
-        ]);
-
-        // Привязываем атрибуты к вариантам
-        $variant1->attributeValues()->attach([$red->id, $gb128->id]);
-        $variant2->attributeValues()->attach([$red->id, $gb256->id]);
-        $variant3->attributeValues()->attach([$blue->id, $gb128->id]);
-        $variant4->attributeValues()->attach([$blue->id, $gb256->id]);
     }
 }
