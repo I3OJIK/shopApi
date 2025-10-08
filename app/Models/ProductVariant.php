@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\ProductVariantObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Product $product
  * @property-read Collection<int, AttributeValue> $attributeValues
  */
+#[ObservedBy([ProductVariantObserver::class])]
 class ProductVariant extends Model
 {
     use SoftDeletes;

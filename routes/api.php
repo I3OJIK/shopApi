@@ -3,11 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\TestContoller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
-Route::get('test', [TestContoller::class,'index']);
 
 Route::prefix('auth')->group(function () {
 
@@ -23,3 +19,5 @@ Route::prefix('auth')->group(function () {
     });
 
 });
+
+// Route::get('test', [TestContoller::class,'index']);

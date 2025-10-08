@@ -342,7 +342,7 @@
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2025-10-03T12:34:56Z"
+                        "example": "2025-10-03 13:41:09"
                     }
                 },
                 "type": "object"
@@ -386,6 +386,59 @@
                         "type": "string",
                         "format": "password",
                         "example": "secret123"
+                    }
+                },
+                "type": "object"
+            },
+            "AttributeFilterData": {
+                "description": "Фильтр по атрибуту (например, цвет, объем памяти)",
+                "properties": {
+                    "name": {
+                        "description": "Название атрибута (например, color, storage)",
+                        "type": "string",
+                        "example": "color"
+                    },
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "[red, blue]"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ProductFilterData": {
+                "properties": {
+                    "search": {
+                        "type": "string",
+                        "example": "Apple"
+                    },
+                    "category_id": {
+                        "type": "integer",
+                        "example": "2"
+                    },
+                    "attributes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AttributeFilterData"
+                        }
+                    },
+                    "min_price": {
+                        "type": "integer",
+                        "example": "20"
+                    },
+                    "max_price": {
+                        "type": "integer",
+                        "example": "20"
+                    },
+                    "sort": {
+                        "type": "string",
+                        "example": "price_desc"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"
