@@ -36,10 +36,10 @@ class ProductVariantObserver
 
         $sql = <<<SQL
         SELECT
-            MIN(price) AS "min_price",
-            MAX(price) AS "max_price"
+            MIN(price) AS min_price,
+            MAX(price) AS max_price
         FROM
-            "product_variants"
+            product_variants
         WHERE
             product_id = ?
         SQL;

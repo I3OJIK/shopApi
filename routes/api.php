@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TestContoller;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,4 @@ Route::prefix('auth')->group(function () {
 
 });
 
-// Route::get('test', [TestContoller::class,'index']);
+Route::get('test', [ProductController::class,'index']);

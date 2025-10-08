@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property int|null $min_price
+ * @property int|null $max_price
  * @property string $image
  * @property int $category_id
  * @property \Illuminate\Support\Carbon $created_at
@@ -30,6 +32,8 @@ class Product extends Model
         'id',
         'name',
         'description',
+        'min_price',
+        'max_price',
         'image',
         'category_id',
     ];
@@ -49,8 +53,8 @@ class Product extends Model
     /**
      * Категории продукта
      */
-    public function categories(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_product');
+        return $this->belongsTo(Category::class);
     }
 }

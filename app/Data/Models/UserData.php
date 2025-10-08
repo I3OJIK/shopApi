@@ -24,5 +24,5 @@ class UserData extends BaseData
     public string $role;
 
     #[OA\Property(type: "string", format: "date-time", example: "2025-10-03 13:41:09")]
-    public string $created_at;
+    public string $createdAt;
 }
