@@ -50,6 +50,23 @@ services:
     env_file:
       .env
 
+  rabbitmq:
+      image: rabbitmq:4.1
+      container_name: rabbitmq
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      networks:
+        - web-network
+  
+  redis:
+    image: redis:8-alpine
+    container_name: laravel-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - web-network
+
 networks:
   db-network:
     driver: bridge

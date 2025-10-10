@@ -1,6 +1,5 @@
 FROM php:8.4.7-fpm
 
-# Моя стандартная сборка Dockerfile
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -28,9 +27,8 @@ RUN docker-php-ext-install -j$(nproc) \
     sockets \
     calendar
 
-# Если понадобится RabbitMQ и/или Redis
-# RUN pecl install redis && docker-php-ext-enable redis
-# RUN pecl install amqp && docker-php-ext-enable amqp
+RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install amqp && docker-php-ext-enable amqp
 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
