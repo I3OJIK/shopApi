@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Data\Requests\Auth\RegisterData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
@@ -31,23 +32,7 @@ class RegistrationController extends Controller
         security: [],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
-                type:"object",
-                properties: [
-                    new OA\Property(
-                        property: "name",
-                        type: "string",
-                    ),
-                    new OA\Property(
-                        property: "email",
-                        type: "string",
-                        format: "email"
-                    ),
-                    new OA\Property(
-                        property: "password",
-                        type: "string",
-                        format: "password"
-                    )
-                ]
+                ref: "#/components/schemas/RegisterData"
             )
         ),
         responses: [
@@ -80,11 +65,14 @@ class RegistrationController extends Controller
             ),
         ]
     )]
-    public function register(RegisterRequest $request): JsonResponse
+    public function register(RegisterData $data): JsonResponse
     {
-            $data = $request->validated();
-            $data['password'] = Hash::make($data['password']);
-            User::create($data);
-            return response()->json(["message" => "User created"], Response::HTTP_CREATED);
+        User::create([
+            'name'     => $data->name,
+            'email'    => $data->email,
+            'password' => Hash::make($data->password),
+        ]);
+        
+        return response()->json(["message" => "User created"], Response::HTTP_CREATED);
     }
 }
