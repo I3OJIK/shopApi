@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $product_id
  * @property string $sku
+ * @property string $full_name
  * @property int $price
  * @property int $stock
  * @property \Illuminate\Support\Carbon $created_at
@@ -32,6 +33,7 @@ class ProductVariant extends Model
         'id',
         'product_id',
         'sku',
+        'full_name',
         'price',
         'stock',
     ];
