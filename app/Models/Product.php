@@ -19,8 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $stock
  * @property bool $is_active
  * 
- * @property-read Product $product
- * @property-read Collection<int, AttributeValue> $attributeValues
+ * @property-read Product $productGroup
  */
 class Product extends Model
 {
@@ -42,7 +41,7 @@ class Product extends Model
     /**
      * Продукт принадлежит группе товаров
      */
-    public function product(): BelongsTo
+    public function productGroup(): BelongsTo
     {
         return $this->belongsTo(ProductGroup::class);
     }

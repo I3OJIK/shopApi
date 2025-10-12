@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\ProductGroup;
+use App\Data\Requests\Product\ProductFilterData;
+use App\Data\Responses\Product\ProductData;
+use App\Services\ProductService;
 
 class ProductController extends Controller
 {
     public function __construct(
+        private ProductService $productService
     )
     {}
 
-    public function index()
+    public function index(ProductFilterData $data)
     {
-        $productGroup = ProductGroup::find(1);
-        // dd($productGroup);
-        $category = Category::find(1);
-        dd($category->children);
+        $products = $this->productService->list($data);
+        
+        // dd($products->first()->variants);
+        return ProductData::collect($products);
+        // return ProductVariantData::collect($products->first()->variants());
+
     }
 }
