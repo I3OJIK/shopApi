@@ -15,12 +15,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $parent_id
  * @property string $description
  * @property bool $is_active
- * @property \Illuminate\Support\Carbon $created_at
- * @property \Illuminate\Support\Carbon $updated_at
  * 
  * @property-read Category $parent
  * @property-read Collection<int, Category> $children
- * @property-read Collection<int, Product> $products
+ * @property-read Collection<int, Product> $productGroups
  */
 class Category extends Model
 {
@@ -33,7 +31,7 @@ class Category extends Model
         'is_active',
     ];
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * Категоия родитель
@@ -54,10 +52,10 @@ class Category extends Model
 
 
     /**
-     * Продукты категории
+     *  Группы продуктов относящиеся к подкатегории
      */
-    public function products(): HasMany
+    public function productGroups(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(ProductGroup::class);
     }
 }

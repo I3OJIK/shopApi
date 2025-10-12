@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('stock')->default(1);
             $table->boolean('is_active')->default(true);
 
-            $table->unique(['product_group_id', 'color', 'size']);
+            $table->unique(['product_group_id', 'color', 'size', 'variant']);
         });
     }
 

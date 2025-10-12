@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique()->index();
+            $table->text('description')->nullable();
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->boolean('is_active')->default(true);
         });

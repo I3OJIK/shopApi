@@ -2,13 +2,9 @@
 
 namespace App\Models;
 
-use App\Observers\ProductVariantObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Определенный вариант товара (Синий apple 12)
@@ -21,11 +17,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $image
  * @property int $price
  * @property int $stock
+ * @property bool $is_active
  * 
  * @property-read Product $product
  * @property-read Collection<int, AttributeValue> $attributeValues
  */
-class ProductVariant extends Model
+class Product extends Model
 {
 
     protected $fillable = [
@@ -38,15 +35,16 @@ class ProductVariant extends Model
         'image',
         'price',
         'stock',
+        'is_active',
     ];
-    
+    public $timestamps = false;
 
     /**
      * Продукт принадлежит группе товаров
      */
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductGroup::class);
     }
 
 }

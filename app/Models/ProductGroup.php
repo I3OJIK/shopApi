@@ -14,20 +14,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $name
  * @property string|null $description
  * @property int $category_id
+ * @property bool $is_active
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * 
  * @property-read Collection<int, Product> $products
  * @property-read Collection<int, Category> $categories
  */
-class Product extends Model
+class ProductGroup extends Model
 {
-    use SoftDeletes;
     
     protected $fillable = [
         'name',
         'description',
         'category_id',
+        'is_active',
     ];
 
     public $timestamps = false;
