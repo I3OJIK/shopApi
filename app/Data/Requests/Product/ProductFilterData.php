@@ -18,13 +18,13 @@ class ProductFilterData extends BaseData
     #[OA\Property(type: "string", example: "Apple")]
     public ?string $search;
 
-    #[OA\Property(
-        type: "string", 
-        example: "15291-99990",
-        description: "Price range in format 'min-max'. Examples: '1000-50000', '1000-' (min only), '-50000' (max only)"
-    )]
+    #[OA\Property(type: "int", example: "15291")]
     #[MapInputName(SnakeCaseMapper::class)]
-    public ?string $priceRange;
+    public ?int $minPrice;
+
+    #[OA\Property(type: "int", example: "15291")]
+    #[MapInputName(SnakeCaseMapper::class)]
+    public ?int $maxPrice;
 
     #[OA\Property(type: "string", example: "price_desc")]
     #[In('price_asc', 'price_desc', 'name_asc', 'name_desc')]

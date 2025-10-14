@@ -23,4 +23,4 @@ Route::prefix('auth')
 
 });
 
-Route::get('test', [ProductController::class,'index']);
+Route::get('products', [ProductController::class,'index']);

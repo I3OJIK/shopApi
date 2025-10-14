@@ -7,7 +7,7 @@ use App\Models\Product;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(schema: "ProductData")]
-class ProductData extends Data
+class ProductListData extends Data
 {
     public function __construct(
         public int $id,
