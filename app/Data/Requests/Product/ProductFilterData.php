@@ -32,6 +32,7 @@ class ProductFilterData extends BaseData
 
     #[OA\Property(type: "int", example: "1")]
     #[Min(20), Max(100)]
+    #[MapInputName(SnakeCaseMapper::class)]
     public ?int $perPage = 20;
 
 }
