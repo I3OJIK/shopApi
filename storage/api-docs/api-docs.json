@@ -60,8 +60,18 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
                                         "errors": {
-                                            "type": "object"
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -296,8 +306,18 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
                                         "errors": {
-                                            "type": "object"
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -307,6 +327,67 @@
                     }
                 },
                 "security": []
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Каталог товаров",
+                "description": "Возвращает список продуктов с фильтрацией, поиском и сортировкой",
+                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Фильтры для поиска продуктов",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/ProductFilterData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список продуктов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductListData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
@@ -389,6 +470,102 @@
                     }
                 },
                 "type": "object"
+            },
+            "ProductFilterData": {
+                "properties": {
+                    "search": {
+                        "type": "string",
+                        "example": "Iphone",
+                        "nullable": true
+                    },
+                    "min_price": {
+                        "type": "integer",
+                        "example": "1000",
+                        "nullable": true
+                    },
+                    "max_price": {
+                        "type": "integer",
+                        "example": "100000",
+                        "nullable": true
+                    },
+                    "sort": {
+                        "type": "string",
+                        "example": "price_asc",
+                        "nullable": true
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": "20",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ProductListData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Iphone 14 256GB, red, Limited Edition"
+                    },
+                    "size": {
+                        "type": "string",
+                        "example": "256GB"
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "Red"
+                    },
+                    "variant": {
+                        "type": "string",
+                        "example": "Limited Edition",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/image.jpg",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "integer",
+                        "example": 1999
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "product_group": {
+                        "description": "Группа продукта",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Iphone 14"
+                            },
+                            "category": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Smartfones"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -407,6 +584,10 @@
         {
             "name": "Auth",
             "description": "Авторизация пользователей"
+        },
+        {
+            "name": "Products",
+            "description": "Каталог товаров"
         }
     ]
 }

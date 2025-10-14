@@ -19,6 +19,11 @@ use OpenApi\Attributes as OA;
     description: "Авторизация пользователей"
 )]
 
+#[OA\Tag(
+    name: "Products",
+    description: "Каталог товаров"
+)]
+
 #[OA\SecurityScheme(
     securityScheme: "bearerAuth",
     type: "http",

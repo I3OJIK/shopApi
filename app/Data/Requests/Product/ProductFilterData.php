@@ -16,22 +16,22 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 class ProductFilterData extends BaseData
 {
     public function __construct(
-        #[OA\Property(type: "string", example: "Apple")]
+        #[OA\Property(type: "string", example: "Iphone")]
         public ?string $search,
 
-        #[OA\Property(type: "int", example: "15291")]
+        #[OA\Property(type: "int", example: "1000",  property: "min_price")]
         #[MapInputName(SnakeCaseMapper::class)]
         public ?int $minPrice,
 
-        #[OA\Property(type: "int", example: "15291")]
+        #[OA\Property(type: "int", example: "100000",  property: "max_price")]
         #[MapInputName(SnakeCaseMapper::class)]
         public ?int $maxPrice,
 
-        #[OA\Property(type: "string", example: "price_desc")]
+        #[OA\Property(type: "string", example: "price_asc")]
         #[In('price_asc', 'price_desc', 'name_asc', 'name_desc')]
         public ?string $sort,
 
-        #[OA\Property(type: "int", example: "1")]
+        #[OA\Property(type: "int", example: "20",  property: "per_page")]
         #[Min(20), Max(100)]
         #[MapInputName(SnakeCaseMapper::class)]
         public ?int $perPage = 20,

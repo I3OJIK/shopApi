@@ -54,15 +54,23 @@ class RegistrationController extends Controller
                 response: Response::HTTP_UNPROCESSABLE_ENTITY,
                 description: "Ошибка валидации",
                 content: new OA\JsonContent(
-                    type: "object",
                     properties: [
                         new OA\Property(
+                            property: "message",
+                            type: "string",
+                            example: "The given data was invalid."
+                        ),
+                        new OA\Property(
                             property: "errors",
-                            type: "object"
+                            type: "object",
+                            additionalProperties: new OA\AdditionalProperties(
+                                type: "array",
+                                items: new OA\Items(type: "string")
+                            )
                         )
                     ]
                 )
-            ),
+            )
         ]
     )]
     public function register(RegisterData $data): JsonResponse
