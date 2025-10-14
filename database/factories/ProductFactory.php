@@ -14,10 +14,10 @@ class ProductFactory extends Factory
     {
         return [
             'product_group_id'  => ProductGroup::factory(),
-            'name'              => $this->faker->words(2, true),
-            'size'              => $this->faker->word(),
-            'color'             => $this->faker->word(),
-            'variant'           => $this->faker->word(),
+            'name'              => $this->faker->unique()->words(2, true),
+            'size'              => $this->faker->unique()->word(),
+            'color'             => $this->faker->unique()->word(),
+            'variant'           => $this->faker->unique()->word(),
             'image'             => $this->faker->filePath(),
             'price'             => $this->faker->numberBetween(1000, 100000),
             'stock'             => $this->faker->numberBetween(0, 500),

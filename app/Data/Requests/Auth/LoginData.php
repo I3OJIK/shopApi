@@ -14,11 +14,13 @@ use OpenApi\Attributes as OA;
 )]
 class LoginData extends BaseData
 {
-    #[Required, Email, Exists('users', 'email')]
-    #[OA\Property(type: "string", format: "email", example: "john@example.com")]   
-    public string $email;
+    public function __construct(
+        #[Required, Email, Exists('users', 'email')]
+        #[OA\Property(type: "string", format: "email", example: "john@example.com")]   
+        public string $email,
 
-    #[Required]
-    #[OA\Property(type: "string", format: "password", example: "secret123")]
-    public string $password;
+        #[Required]
+        #[OA\Property(type: "string", format: "password", example: "secret123")]
+        public string $password,
+    ) {}
 }

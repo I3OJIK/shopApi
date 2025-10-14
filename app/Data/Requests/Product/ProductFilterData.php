@@ -15,24 +15,26 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 )]
 class ProductFilterData extends BaseData
 {
-    #[OA\Property(type: "string", example: "Apple")]
-    public ?string $search;
+    public function __construct(
+        #[OA\Property(type: "string", example: "Apple")]
+        public ?string $search,
 
-    #[OA\Property(type: "int", example: "15291")]
-    #[MapInputName(SnakeCaseMapper::class)]
-    public ?int $minPrice;
+        #[OA\Property(type: "int", example: "15291")]
+        #[MapInputName(SnakeCaseMapper::class)]
+        public ?int $minPrice,
 
-    #[OA\Property(type: "int", example: "15291")]
-    #[MapInputName(SnakeCaseMapper::class)]
-    public ?int $maxPrice;
+        #[OA\Property(type: "int", example: "15291")]
+        #[MapInputName(SnakeCaseMapper::class)]
+        public ?int $maxPrice,
 
-    #[OA\Property(type: "string", example: "price_desc")]
-    #[In('price_asc', 'price_desc', 'name_asc', 'name_desc')]
-    public ?string $sort;
+        #[OA\Property(type: "string", example: "price_desc")]
+        #[In('price_asc', 'price_desc', 'name_asc', 'name_desc')]
+        public ?string $sort,
 
-    #[OA\Property(type: "int", example: "1")]
-    #[Min(20), Max(100)]
-    #[MapInputName(SnakeCaseMapper::class)]
-    public ?int $perPage = 20;
+        #[OA\Property(type: "int", example: "1")]
+        #[Min(20), Max(100)]
+        #[MapInputName(SnakeCaseMapper::class)]
+        public ?int $perPage = 20,
+    ) {}
 
 }

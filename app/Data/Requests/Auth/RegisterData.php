@@ -15,15 +15,17 @@ use OpenApi\Attributes as OA;
 )]
 class RegisterData extends BaseData
 {
-    #[Required]
-    #[OA\Property(type: "string", example: "John Doe")]
-    public string $name;
+    public function __construct(
+        #[Required]
+        #[OA\Property(type: "string", example: "John Doe")]
+        public string $name,
 
-    #[Required, Email, Unique('users', 'email')]
-    #[OA\Property(type: "string", format: "email", example: "john@example.com")]
-    public string $email;
+        #[Required, Email, Unique('users', 'email')]
+        #[OA\Property(type: "string", format: "email", example: "john@example.com")]
+        public string $email,
 
-    #[Required, Min(6)]
-    #[OA\Property(type: "string", format: "password", example: "secret123")]
-    public string $password;
+        #[Required, Min(6)]
+        #[OA\Property(type: "string", format: "password", example: "secret123")]
+        public string $password,
+    ) {}
 }
