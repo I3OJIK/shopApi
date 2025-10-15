@@ -24,3 +24,4 @@ Route::prefix('auth')
 });
 
 Route::get('products', [ProductController::class,'index']);
+Route::get('products/{id}', [ProductController::class,'show'])->where('id', '[0-9]+');

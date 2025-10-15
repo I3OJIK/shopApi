@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\Responses\Product;
+namespace App\Data\Responses\Product\List;
 
 use Spatie\LaravelData\Data;
 use App\Models\Product;
@@ -40,6 +40,7 @@ class ProductListData extends Data
             properties: [
                 new OA\Property(property: 'id', type: 'integer', example: 5),
                 new OA\Property(property: 'name', type: 'string', example: 'Iphone 14'),
+                new OA\Property(property: 'description', type: 'string', example: 'description'),
                 new OA\Property(property: 'category', type: 'object', properties: [
                     new OA\Property(property: 'id', type: 'integer', example: 2),
                     new OA\Property(property: 'name', type: 'string', example: 'Smartfones'),
@@ -63,6 +64,7 @@ class ProductListData extends Data
             product_group: [
                 'id' => $product->productGroup->id,
                 'name' => $product->productGroup->name,
+                'description' => $product->productGroup->description,
                 'category' => [
                     'id' => $product->productGroup->category->id,
                     'name' => $product->productGroup->category->name,

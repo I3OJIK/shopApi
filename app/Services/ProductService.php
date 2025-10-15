@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Data\Requests\Product\ProductFilterData;
+use App\Data\Responses\Product\Show\ProductShowData;
 use App\Filters\Product\BaseProductFilter;
 use App\Filters\Product\ProductListFilter;
 use App\Models\Product;
@@ -31,5 +32,17 @@ class ProductService
         $this->ProductListFilter->apply($query, $data->toArray());
 
         return $query->paginate($data->perPage);
+    }
+
+    public function findWithVariants(int $id): ProductShowData
+    {
+        $product = Product::with([
+            'productGroup', 
+            'productGroup.category',
+            'productGroup.products'
+        ])->findOrFail($id);
+ 
+
+        return ProductShowData::fromModelWithVariants($product);
     }
 }

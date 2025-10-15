@@ -21,10 +21,12 @@ class ProductFilterData extends BaseData
 
         #[OA\Property(type: "int", example: "1000",  property: "min_price")]
         #[MapInputName(SnakeCaseMapper::class)]
+        #[Min(0)]
         public ?int $minPrice,
 
         #[OA\Property(type: "int", example: "100000",  property: "max_price")]
         #[MapInputName(SnakeCaseMapper::class)]
+        #[Min(0)]
         public ?int $maxPrice,
 
         #[OA\Property(type: "string", example: "price_asc")]
