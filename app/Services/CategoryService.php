@@ -10,13 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CategoryService
 {
-
-    public function __construct(
-        private ProductListFilter $ProductListFilter
-    )
-    {}
-
-
     public function getCategoriesTree(): Collection
     {
         return Category::whereNull('parent_id')

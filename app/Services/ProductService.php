@@ -13,7 +13,7 @@ class ProductService
 {
 
     public function __construct(
-        private ProductListFilter $ProductListFilter
+        private ProductListFilter $productListFilter
     )
     {}
     /**
@@ -29,7 +29,7 @@ class ProductService
         $query = Product::query()
             ->with(['productGroup', 'productGroup.category']);
 
-        $this->ProductListFilter->apply($query, $data->toArray());
+        $this->productListFilter->apply($query, $data->toArray());
 
         return $query->paginate($data->perPage);
     }

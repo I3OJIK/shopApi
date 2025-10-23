@@ -17,6 +17,6 @@ class CategoryProductFilter extends BaseFilter
         'minPrice' => MinPriceFilter::class,
         'maxPrice' => MaxPriceFilter::class,
         'sort' => SortFilter::class,
-        'productGroups' => ProductGroupFilter::class, 
+        'productGroup' => ProductGroupFilter::class, 
     ];
 }

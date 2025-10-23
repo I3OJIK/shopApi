@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -60,4 +61,22 @@ class Category extends Model
     {
         return $this->hasMany(ProductGroup::class);
     }
+
+
+    /**
+     * Вывод продуктов данной подкатегории, либо если выбрана категория - продукты всех ее подкатегорий
+     * 
+     * @return Product
+     */
+    public function products(): Builder
+    {
+        $categoryIds = $this->parent_id
+            ? [$this->id]                                  // если подкатегория
+            : $this->children()->pluck('id')->toArray();   // если родительская
+
+        return Product::whereHas('productGroup', function ($q) use ($categoryIds) {
+            $q->whereIn('category_id', $categoryIds);
+        });
+    }
+
 }

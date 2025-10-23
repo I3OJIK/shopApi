@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use OpenApi\Attributes as OA;
-
+use Spatie\LaravelData\PaginatedDataCollection;
 
 class ProductController extends Controller
 {
@@ -68,11 +68,11 @@ class ProductController extends Controller
             )
         ]
     )]
-    public function index(ProductFilterData $data): LengthAwarePaginator
+    public function index(ProductFilterData $data): PaginatedDataCollection
     {
         $products = $this->productService->getProducts($data);
 
-        return ProductListData::collect($products);
+        return ProductListData::collect($products, PaginatedDataCollection::class);
     }
 
     #[OA\Get(
