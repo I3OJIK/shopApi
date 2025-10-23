@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\Responses\Product\Show;
+namespace App\Data\Responses\Product;
 
 use Spatie\LaravelData\Data;
 use OpenApi\Attributes as OA;

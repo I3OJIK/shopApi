@@ -482,6 +482,24 @@
                 },
                 "type": "object"
             },
+            "ProductGroupData": {
+                "description": "Базовая информация о группе продуктов",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Iphone 14"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Описание группы продуктов"
+                    }
+                },
+                "type": "object"
+            },
             "UserData": {
                 "required": [
                     "id",
@@ -590,6 +608,114 @@
                 },
                 "type": "object"
             },
+            "CategoryData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Товары для дома и техники",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryWithChildrenData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Техника и гаджеты",
+                        "nullable": true
+                    },
+                    "children": {
+                        "description": "CategoryData>",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryData"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryWithParentData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Техника и гаджеты",
+                        "nullable": true
+                    },
+                    "parent": {
+                        "$ref": "#/components/schemas/CategoryData"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductGroupCategoryData": {
+                "description": "Дерево productGroup и категорий",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Iphone 14"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "description"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/CategoryWithParentData"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductVariantData": {
+                "description": "Доступные варианты продукта (сортировка по productGroup)",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "size": {
+                        "type": "string",
+                        "example": "256GB"
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "Red"
+                    },
+                    "variant": {
+                        "type": "string",
+                        "example": "Limited Edition",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "ProductListData": {
                 "properties": {
                     "id": {
@@ -660,51 +786,6 @@
                 },
                 "type": "object"
             },
-            "ProductGroupCategoryTree": {
-                "description": "Дерево productGroup и категорий",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Iphone 14"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "description"
-                    },
-                    "category": {
-                        "description": "Категории",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "example": 5
-                            },
-                            "name": {
-                                "type": "string",
-                                "example": "smartfones"
-                            },
-                            "parent": {
-                                "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": 2
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Iphone 14"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        },
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
             "ProductShowData": {
                 "description": "Продукт, его доступные варианты, дерево productGroup и категорий",
                 "properties": {
@@ -719,30 +800,7 @@
                         }
                     },
                     "productGroup": {
-                        "$ref": "#/components/schemas/ProductGroupCategoryTree"
-                    }
-                },
-                "type": "object"
-            },
-            "ProductVariantData": {
-                "description": "Доступные варианты продукта (сортировка по productGroup)",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "size": {
-                        "type": "string",
-                        "example": "256GB"
-                    },
-                    "color": {
-                        "type": "string",
-                        "example": "Red"
-                    },
-                    "variant": {
-                        "type": "string",
-                        "example": "Limited Edition",
-                        "nullable": true
+                        "$ref": "#/components/schemas/ProductGroupCategoryData"
                     }
                 },
                 "type": "object"

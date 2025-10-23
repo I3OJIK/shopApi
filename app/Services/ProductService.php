@@ -24,7 +24,7 @@ class ProductService
      * 
      * @return LengthAwarePaginator
      */
-    public function list(ProductFilterData $data): LengthAwarePaginator
+    public function getProducts(ProductFilterData $data): LengthAwarePaginator
     {
         $query = Product::query()
             ->with(['productGroup', 'productGroup.category']);
@@ -34,15 +34,12 @@ class ProductService
         return $query->paginate($data->perPage);
     }
 
-    public function findWithVariants(int $id): ProductShowData
+    public function getProductWithVariants(int $id): Product
     {
-        $product = Product::with([
+        return Product::with([
             'productGroup', 
             'productGroup.category',
             'productGroup.products'
         ])->findOrFail($id);
- 
-
-        return ProductShowData::fromModelWithVariants($product);
     }
 }

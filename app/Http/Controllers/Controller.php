@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Tag(
     name: "Products",
-    description: "Каталог товаров"
+    description: "Товары"
 )]
 
 #[OA\SecurityScheme(

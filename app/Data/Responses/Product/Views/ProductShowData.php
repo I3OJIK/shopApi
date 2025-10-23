@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Data\Responses\Product\Show;
+namespace App\Data\Responses\Product\Views;
 
 use App\Data\Models\ProductData;
+use App\Data\Responses\Product\ProductGroupWithCategoryData;
+use App\Data\Responses\Product\ProductVariantData;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Spatie\LaravelData\Data;
@@ -19,11 +21,12 @@ class ProductShowData extends Data
             type: "array",
             items: new OA\Items(ref: '#/components/schemas/ProductVariantData')
         )]
+        
         /** @var Collection<int, ProductVariantData> */
         public Collection $variants,
 
         #[OA\Property(ref: '#/components/schemas/ProductGroupCategoryTree')]
-        public ProductGroupCategoryTree $productGroup,
+        public ProductGroupWithCategoryData $productGroup,
     ) {}
 
     public static function fromModelWithVariants(Product $product): self
@@ -38,7 +41,7 @@ class ProductShowData extends Data
         return new self(
             product: ProductData::from($product),
             variants: $variants,
-            productGroup: ProductGroupCategoryTree::from($product->productGroup)
+            productGroup: ProductGroupWithCategoryData::from($product->productGroup)
         );
     }
 

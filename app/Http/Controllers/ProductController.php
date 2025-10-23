@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Data\Requests\Product\ProductFilterData;
 use App\Data\Requests\Product\ProductIdData;
-use App\Data\Responses\Product\List\ProductListData;
-use App\Data\Responses\Product\Show\ProductShowData;
+use App\Data\Responses\Product\Views\ProductListData;
+use App\Data\Responses\Product\Views\ProductShowData;
 use App\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -70,7 +70,7 @@ class ProductController extends Controller
     )]
     public function index(ProductFilterData $data): LengthAwarePaginator
     {
-        $products = $this->productService->list($data);
+        $products = $this->productService->getProducts($data);
 
         return ProductListData::collect($products);
     }
@@ -109,8 +109,8 @@ class ProductController extends Controller
     public function show(int $id): ProductShowData|JsonResponse
     {
         try {
-            $productWithVariants = $this->productService->findWithVariants($id);
-            return $productWithVariants;
+            $productWithVariants = $this->productService->getProductWithVariants($id);
+            return ProductShowData::fromModelWithVariants($productWithVariants);
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Product not found'], Response::HTTP_NOT_FOUND);
         }
