@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CategoryService
 {
+    /**
+     * Категории родители с дочерними категорряими
+     * 
+     * @return Collection
+     */
     public function getCategoriesTree(): Collection
     {
         return Category::whereNull('parent_id')
@@ -17,12 +22,23 @@ class CategoryService
             ->get();
     }
 
-    public function findWithVariants(int $id): Product
+
+    /**
+     * @param mixed $id
+     * 
+     * @return Category
+     */
+    public function getCategoryById($id): Category
     {
-        return Product::with([
-            'productGroup', 
-            'productGroup.category',
-            'productGroup.products'
-        ])->findOrFail($id);
+        return Category::with('children')->findOrFail($id);
     }
+
+    // public function findWithVariants(int $id): Product
+    // {
+    //     return Product::with([
+    //         'productGroup', 
+    //         'productGroup.category',
+    //         'productGroup.products'
+    //     ])->findOrFail($id);
+    // }
 }

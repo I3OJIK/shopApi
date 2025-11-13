@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::prefix('auth')
-    ->group(function () {
+Route::prefix('auth')->group(function () {
 
     // Роут без авторизации
     Route::post('login', [AuthController::class,'login']);

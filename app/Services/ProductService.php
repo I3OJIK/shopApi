@@ -39,7 +39,7 @@ class ProductService
         return Product::with([
             'productGroup', 
             'productGroup.category',
-            'productGroup.products'
+            'productGroup.products',
         ])->findOrFail($id);
     }
 }

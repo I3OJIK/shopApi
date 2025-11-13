@@ -329,6 +329,143 @@
                 "security": []
             }
         },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Категории",
+                "description": "Возвращает список категорий",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "responses": {
+                    "200": {
+                        "description": "Список категорий",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryWithChildrenData"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Получить категорию и ее подкатегории (если есть)",
+                "description": "Возвращает информацию о категории",
+                "operationId": "c68e76d323c008827a9e47398b1583de",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID категории",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение категории",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryWithChildrenData"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сategory not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}/products": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Каталог товаров в выбранной категории",
+                "description": "Возвращает список продуктов выбранной категории с фильтрацией, поиском и сортировкой, и подкатегории - если есть",
+                "operationId": "cf74f338f2a5452ed075fbef9a9313ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID категории",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Фильтры для поиска продуктов",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/ProductFilterData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список продуктов выбранной категории",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryProductData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Сategory not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -578,6 +715,41 @@
                 },
                 "type": "object"
             },
+            "CategoryProductFilterData": {
+                "properties": {
+                    "search": {
+                        "type": "string",
+                        "example": "Iphone",
+                        "nullable": true
+                    },
+                    "min_price": {
+                        "type": "integer",
+                        "example": "1000",
+                        "nullable": true
+                    },
+                    "max_price": {
+                        "type": "integer",
+                        "example": "100000",
+                        "nullable": true
+                    },
+                    "sort": {
+                        "type": "string",
+                        "example": "price_asc",
+                        "nullable": true
+                    },
+                    "productGroup": {
+                        "type": "string",
+                        "example": "Iphone 14",
+                        "nullable": true
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": "20",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "ProductFilterData": {
                 "properties": {
                     "search": {
@@ -668,6 +840,27 @@
                     },
                     "parent": {
                         "$ref": "#/components/schemas/CategoryData"
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryProductData": {
+                "properties": {
+                    "products": {
+                        "description": "ProductListData>",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductListData"
+                        },
+                        "nullable": true
+                    },
+                    "childrenCategories": {
+                        "description": "CategoryData>",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryData"
+                        },
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -825,7 +1018,11 @@
         },
         {
             "name": "Products",
-            "description": "Каталог товаров"
+            "description": "Товары"
+        },
+        {
+            "name": "Categories",
+            "description": "Категории"
         }
     ]
 }

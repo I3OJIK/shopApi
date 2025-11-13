@@ -17,9 +17,7 @@ class MaxPriceFilter implements FilterInterface
      */
     public function apply(Builder $query, mixed $maxPrice): Builder
     {
-
-            $query = $query->where('price', '<=', $maxPrice);
-
+        $query = $query->where('price', '<=', $maxPrice);
         return $query;
     }
 }

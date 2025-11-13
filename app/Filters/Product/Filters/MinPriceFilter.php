@@ -17,9 +17,7 @@ class MinPriceFilter implements FilterInterface
      */
     public function apply(Builder $query, mixed $minPrice): Builder
     {
-
-            $query = $query->where('price', '>=', $minPrice);
-
+        $query = $query->where('price', '>=', $minPrice);
         return $query;
     }
 }

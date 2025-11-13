@@ -24,6 +24,11 @@ use OpenApi\Attributes as OA;
     description: "Товары"
 )]
 
+#[OA\Tag(
+    name: "Categories",
+    description: "Категории"
+)]
+
 #[OA\SecurityScheme(
     securityScheme: "bearerAuth",
     type: "http",

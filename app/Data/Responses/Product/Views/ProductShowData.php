@@ -21,7 +21,6 @@ class ProductShowData extends Data
             type: "array",
             items: new OA\Items(ref: '#/components/schemas/ProductVariantData')
         )]
-        
         /** @var Collection<int, ProductVariantData> */
         public Collection $variants,
 
