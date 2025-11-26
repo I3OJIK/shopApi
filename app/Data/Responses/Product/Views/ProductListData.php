@@ -47,7 +47,7 @@ class ProductListData extends Data
                 ])
             ]
         )]
-        public array $product_group,
+        public array $productGroup,
     ) {}
 
     public static function fromModel(Product $product): self
@@ -61,7 +61,7 @@ class ProductListData extends Data
             image: $product->image,
             price: $product->price,
             stock: $product->stock,
-            product_group: [
+            productGroup: [
                 'id' => $product->productGroup->id,
                 'name' => $product->productGroup->name,
                 'description' => $product->productGroup->description,

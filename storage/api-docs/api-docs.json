@@ -329,6 +329,49 @@
                 "security": []
             }
         },
+        "/api/cart": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Корзина",
+                "description": "Возвращает информацию о товарах находящихся в корзине",
+                "operationId": "0652f94dde92e36bbb3c461356ce1d7b",
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение корзины",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartData"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized – токен отсутствует, невалиден или истёк",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Token is null"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -580,6 +623,43 @@
     },
     "components": {
         "schemas": {
+            "CartItemData": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "cartId": {
+                        "type": "string",
+                        "example": 1
+                    },
+                    "productId": {
+                        "type": "string",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "type": "string",
+                        "example": 1
+                    },
+                    "isSelected": {
+                        "type": "string",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-03 13:41:09",
+                        "nullable": true
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-03 13:41:09",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "ProductData": {
                 "properties": {
                     "id": {
@@ -780,6 +860,76 @@
                 },
                 "type": "object"
             },
+            "CartData": {
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CartItemDataWithSubtotal"
+                        }
+                    },
+                    "summary": {
+                        "properties": {
+                            "totalItems": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "totalSelected": {
+                                "type": "integer",
+                                "example": 3
+                            },
+                            "totalAmount": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 249.95
+                            },
+                            "selectedAmount": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 149.97
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CartItemDataWithSubtotal": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/ProductData"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "isSelected": {
+                        "type": "string",
+                        "example": 1
+                    },
+                    "subtotal": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-03 13:41:09",
+                        "nullable": true
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-10-03 13:41:09",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "CategoryData": {
                 "properties": {
                     "id": {
@@ -945,7 +1095,7 @@
                         "type": "integer",
                         "example": 10
                     },
-                    "product_group": {
+                    "productGroup": {
                         "description": "Группа продукта",
                         "properties": {
                             "id": {
@@ -1023,6 +1173,10 @@
         {
             "name": "Categories",
             "description": "Категории"
+        },
+        {
+            "name": "Cart",
+            "description": "Cart"
         }
     ]
 }

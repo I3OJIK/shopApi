@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * 
  * @property-read Category $parent
  * @property-read Collection<int, Category> $children
- * @property-read Collection<int, Product> $productGroups
+ * @property-read Collection<int, ProductGroup> $productGroups
  */
 class Category extends Model
 {

@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * 
- * @property-read Cart $Cart
- * @property-read Collection<int, Product> $product
+ * @property-read Cart $cart
+ * @property-read Product $product
  */
 class CartItem extends Model
 {

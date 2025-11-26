@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * 
  * @property-read User $user
  * @property-read Collection<int, CartItem> $items
+ * 
  */
 class Cart extends Model
 {

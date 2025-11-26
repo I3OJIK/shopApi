@@ -20,7 +20,7 @@ class JwtTokenService
     public function __construct()
     {
         $this->secret     = env('JWT_SECRET', 'secret');
-        $this->accessTtl  = (int) env('JWT_ACCESS_TTL', 600);
+        $this->accessTtl  = (int) env('JWT_ACCESS_TTL', 60000);
         $this->refreshTtl = (int) env('JWT_REFRESH_TTL', 2592000);
     }
 

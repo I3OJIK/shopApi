@@ -10,6 +10,7 @@ use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class JwtAuthMiddleware
 {
@@ -34,6 +35,9 @@ class JwtAuthMiddleware
             $request->setUserResolver(function () use ($payload) {
                 return User::find($payload->sub);
             });
+            $user = User::find($payload->sub);
+            Auth::shouldUse('api');
+            Auth::setUser($user);
         } catch (ExpiredException $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         } catch (SignatureInvalidException $e) {

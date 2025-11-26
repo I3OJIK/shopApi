@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\ProductController;
@@ -32,3 +33,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']); 
 
 Route::get('/categories/{id}/products', [CategoryProductController::class, 'index']); 
+
+Route::middleware('jwt.auth')->group(function() {
+    Route::get('/cart', [CartController::class, 'index']); 
+});
