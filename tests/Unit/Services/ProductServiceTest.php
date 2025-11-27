@@ -39,7 +39,7 @@ class ProductServiceTest extends TestCase
             perPage: 10
         );
 
-        $result = $this->service->list($data);
+        $result = $this->service->getProducts($data);
 
         $this->assertInstanceOf(LengthAwarePaginator::class, $result);
         $this->assertCount(1, $result->items());

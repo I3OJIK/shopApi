@@ -19,6 +19,9 @@ class CartData extends BaseData
             items: new OA\Items(ref: '#/components/schemas/CartItemDataWithSubtotal')
         )]
         public Collection $items,
+
+        #[OA\Property(property: "is_all_selected", type: "boolean", example: true)]
+        public bool $isAllSelected,
         
         #[OA\Property(
             type: 'object',
@@ -40,6 +43,7 @@ class CartData extends BaseData
         return new self(
 
             items: $cartitemsdata,
+            isAllSelected: $cart->is_all_selected,
             summary: [
                 'totalItems' => $cart->items->sum('quantity'),
                 'totalSelected' => $cart->items->where('is_selected', true)->sum('quantity'),

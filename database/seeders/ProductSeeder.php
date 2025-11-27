@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
                     'color' => $color,
                     'variant' => $variant,
                     'price' => rand(10000, 100000),
-                    'stock' => rand(1, 1000)
+                    'stock' => rand(111, 1000)
                 ]);
 
             }

@@ -22,6 +22,7 @@ class Cart extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'is_all_selected'
     ];
 
     public $timestamps = true;

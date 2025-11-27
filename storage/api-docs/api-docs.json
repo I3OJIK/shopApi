@@ -372,6 +372,336 @@
                 ]
             }
         },
+        "/api/cart/items": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Добавить товар в корзину",
+                "operationId": "1013e22046b2b2c9c0fe91c46aa76499",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddItemData"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Товар добавлен в корзину",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product added"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Недостаточно товара в наличии",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "details": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Product not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/items/{id}": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Удалить товар из корзины",
+                "operationId": "9e3ff039b8f31bc48f5867803aa73b09",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID элемента в корзине",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Товар удален из корзины",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Item deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Изменить количество товара в корзине",
+                "operationId": "461889816f0a63523f97c6ed977ff9cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID элемента в корзине",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateItemQuantityData"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Кол-во товара обновлено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quantity updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Недостаточно товара в наличии",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        },
+                                        "details": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/items/{id}/select": {
+            "patch": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Выбрать/отменить выделение товара в корзине",
+                "operationId": "c3d8e4935cc5e7f8fadf069f4b7a2d6e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID элемента в корзине",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Изменено состояние товара (выбран/не выбран)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Item select change"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товар не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/items/select-all": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Выбрать/отменить выбор всех товаров в корзине",
+                "operationId": "9be8630d8645d312f47a3ee5680f3629",
+                "responses": {
+                    "200": {
+                        "description": "Товары изменили состояние выбраны/не выбраны все",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Items select change"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Корзина не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Cart not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -795,6 +1125,29 @@
                 },
                 "type": "object"
             },
+            "AddItemData": {
+                "properties": {
+                    "product_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "20",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateItemQuantityData": {
+                "properties": {
+                    "quantity": {
+                        "type": "integer",
+                        "example": "20"
+                    }
+                },
+                "type": "object"
+            },
             "CategoryProductFilterData": {
                 "properties": {
                     "search": {
@@ -868,6 +1221,10 @@
                             "$ref": "#/components/schemas/CartItemDataWithSubtotal"
                         }
                     },
+                    "is_all_selected": {
+                        "type": "boolean",
+                        "example": true
+                    },
                     "summary": {
                         "properties": {
                             "totalItems": {
@@ -909,7 +1266,7 @@
                     },
                     "isSelected": {
                         "type": "string",
-                        "example": 1
+                        "example": "true"
                     },
                     "subtotal": {
                         "type": "integer",

@@ -36,4 +36,9 @@ Route::get('/categories/{id}/products', [CategoryProductController::class, 'inde
 
 Route::middleware('jwt.auth')->group(function() {
     Route::get('/cart', [CartController::class, 'index']); 
+    Route::post('/cart/items', [CartController::class, 'addItem']);
+    Route::patch('/cart/items/{id}', [CartController::class, 'updateItemQuantity']);
+    Route::delete('/cart/items/{id}', [CartController::class, 'deleteItem']);
+    Route::patch('/cart/items/{id}/select', [CartController::class, 'selectItem']);
+    Route::post('/cart/items/select-all', [CartController::class, 'selectAllItems']);
 });
