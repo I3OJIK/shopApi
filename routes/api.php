@@ -36,9 +36,17 @@ Route::get('/categories/{id}/products', [CategoryProductController::class, 'inde
 
 Route::middleware('jwt.auth')->group(function() {
     Route::get('/cart', [CartController::class, 'index']); 
+
+    // Управление элементами корзины
     Route::post('/cart/items', [CartController::class, 'addItem']);
     Route::patch('/cart/items/{id}', [CartController::class, 'updateItemQuantity']);
     Route::delete('/cart/items/{id}', [CartController::class, 'deleteItem']);
+    
+    // Выбор элементов
     Route::patch('/cart/items/{id}/select', [CartController::class, 'selectItem']);
-    Route::post('/cart/items/select-all', [CartController::class, 'selectAllItems']);
+    Route::post('/cart/select-all', [CartController::class, 'selectAllItems']);
+    
+    // Очистка корзины
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+    Route::delete('/cart/clear-selected', [CartController::class, 'clearSelected']);
 });

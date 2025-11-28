@@ -594,6 +594,134 @@
                 ]
             }
         },
+        "/api/cart/clear": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Полная очистка корзины",
+                "operationId": "c2cf94402630acad1cc6d317ec806693",
+                "responses": {
+                    "200": {
+                        "description": "Корзина очищена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart clear"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товары не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Очистка пустой корзины",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Cannot perform operation on empty cart"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart/clear-selected": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Очистка выбранных элементов корзины",
+                "operationId": "dcfc41f50248fa39b90fe69409255261",
+                "responses": {
+                    "200": {
+                        "description": "Выбранные элементы корзины удалены",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Selected cart items clear"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Товары не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Нет выбранных элементов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No selected items to remove"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/cart/items/{id}/select": {
             "patch": {
                 "tags": [
@@ -654,13 +782,13 @@
                 ]
             }
         },
-        "/api/cart/items/select-all": {
+        "/api/cart/select-all": {
             "post": {
                 "tags": [
                     "Cart"
                 ],
                 "summary": "Выбрать/отменить выбор всех товаров в корзине",
-                "operationId": "9be8630d8645d312f47a3ee5680f3629",
+                "operationId": "2d01acc7ffd1de253a07e93648daabb2",
                 "responses": {
                     "200": {
                         "description": "Товары изменили состояние выбраны/не выбраны все",

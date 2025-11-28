@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data\Requests\Cart\AddItemData;
 use App\Data\Requests\Cart\UpdateItemQuantityData;
 use App\Data\Responses\Cart\CartData;
+use App\Exceptions\CartEmptyException;
 use App\Exceptions\InsufficientStockException;
 use App\Services\CartService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -230,6 +231,107 @@ class CartController extends Controller
             return response()->json(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
         }
     }
+    #[OA\Delete(
+        path: "/api/cart/clear",
+        summary: "Полная очистка корзины", 
+        tags: ["Cart"],
+        security: [["bearerAuth" => []]],
+
+        responses: [
+            new OA\Response(
+                response: Response::HTTP_OK,
+                description: "Корзина очищена",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string", example: "Cart clear")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: Response::HTTP_NOT_FOUND,
+                description: "Товары не найден",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "error", type: "string", example: "Item not found")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: Response::HTTP_BAD_REQUEST,
+                description: "Очистка пустой корзины",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "error", type: "string", example: "Cannot perform operation on empty cart")
+                    ]
+                )
+            )
+        ]
+    )]
+    public function clear(): JsonResponse
+    {
+        try {
+            $this->cartService->clearCart();
+            return response()->json(["message" => "Cart clear"], Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
+        } catch (CartEmptyException $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[OA\Delete(
+        path: "/api/cart/clear-selected",
+        summary: "Очистка выбранных элементов корзины", 
+        tags: ["Cart"],
+        security: [["bearerAuth" => []]],
+
+        responses: [
+            new OA\Response(
+                response: Response::HTTP_OK,
+                description: "Выбранные элементы корзины удалены",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "message", type: "string", example: "Selected cart items clear")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: Response::HTTP_NOT_FOUND,
+                description: "Товары не найден",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "error", type: "string", example: "Item not found")
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: Response::HTTP_BAD_REQUEST,
+                description: "Нет выбранных элементов",
+                content: new OA\JsonContent(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "error", type: "string", example: "No selected items to remove")
+                    ]
+                )
+            )
+        ]
+    )]
+    public function clearSelected(): JsonResponse
+    {
+        try {
+            $this->cartService->clearSelectedItems();
+            return response()->json(["message" => "Selected cart items clear"], Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Item not found'], Response::HTTP_NOT_FOUND);
+        } catch (CartEmptyException $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
 
     #[OA\Patch(
         path: "/api/cart/items/{id}/select",
@@ -279,7 +381,7 @@ class CartController extends Controller
     }
 
     #[OA\Post(
-        path: "/api/cart/items/select-all",
+        path: "/api/cart/select-all",
         summary: "Выбрать/отменить выбор всех товаров в корзине", 
         tags: ["Cart"],
         security: [["bearerAuth" => []]],
