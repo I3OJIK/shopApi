@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('address_id')->constrained('addresses')->restrictOnDelete();
             $table->integer('total_price')->nullable(false);
             $table->enum('status', ['pending', 'paid', 'shipped', 'completed', 'cancelled'])->default('pending');
+            $table->string('comment')->nullable(true);
             $table->timestamps();
         });
     }

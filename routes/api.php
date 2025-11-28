@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\CartController;
@@ -49,4 +50,10 @@ Route::middleware('jwt.auth')->group(function() {
     // Очистка корзины
     Route::delete('/cart/clear', [CartController::class, 'clear']);
     Route::delete('/cart/clear-selected', [CartController::class, 'clearSelected']);
+
+
+    Route::get('/addresses', [AddressController::class, 'index']);      // список адресов
+    Route::post('/addresses', [AddressController::class, 'store']);     // создать адрес
+    Route::put('/addresses/{id}', [AddressController::class, 'update']); // обновить адрес
+    Route::delete('/addresses/{id}', [AddressController::class, 'delete']);
 });

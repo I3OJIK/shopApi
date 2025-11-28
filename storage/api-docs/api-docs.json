@@ -5,6 +5,214 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/addresses": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Список адресов пользователя",
+                "operationId": "33ccea30443418dbab9242aa67931614",
+                "responses": {
+                    "200": {
+                        "description": "Список адресов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AddressData"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Создать новый адрес",
+                "operationId": "5549e34fec9817a9794302a767fc7fde",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Адрес создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddressData"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибки валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The phone field must not be greater than 30."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/addresses/{id}": {
+            "put": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Обновить адрес",
+                "operationId": "2f078db19c8d7e5a374faa4b048e4c45",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddressRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Адрес обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddressData"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Адрес не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Address not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Удалить адрес",
+                "operationId": "5d8f1bc6894573e07ff01267a9e47099",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Адрес удален",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Адрес не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Address not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "tags": [
@@ -1081,6 +1289,47 @@
     },
     "components": {
         "schemas": {
+            "AddressData": {
+                "required": [
+                    "id",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+79991234567"
+                    },
+                    "address_text": {
+                        "type": "string",
+                        "example": "г. Москва, ул. Ленина, д. 10"
+                    },
+                    "apartment_number": {
+                        "type": "string",
+                        "example": "25",
+                        "nullable": true
+                    },
+                    "doorphone": {
+                        "type": "string",
+                        "example": "25K1234",
+                        "nullable": true
+                    },
+                    "entrance": {
+                        "type": "string",
+                        "example": "2",
+                        "nullable": true
+                    },
+                    "floor": {
+                        "type": "string",
+                        "example": "5",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "CartItemData": {
                 "properties": {
                     "id": {
@@ -1206,6 +1455,39 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2025-10-03 13:41:09"
+                    }
+                },
+                "type": "object"
+            },
+            "AddressRequest": {
+                "properties": {
+                    "phone": {
+                        "type": "string",
+                        "example": "+79991234567"
+                    },
+                    "address_text": {
+                        "type": "string",
+                        "example": "г. Москва, ул. Ленина, д. 10"
+                    },
+                    "apartment_number": {
+                        "type": "string",
+                        "example": "25",
+                        "nullable": true
+                    },
+                    "doorphone": {
+                        "type": "string",
+                        "example": "25K1234",
+                        "nullable": true
+                    },
+                    "entrance": {
+                        "type": "string",
+                        "example": "2",
+                        "nullable": true
+                    },
+                    "floor": {
+                        "type": "string",
+                        "example": "5",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -1658,6 +1940,10 @@
         {
             "name": "Categories",
             "description": "Категории"
+        },
+        {
+            "name": "Addresses",
+            "description": "Addresses"
         },
         {
             "name": "Cart",

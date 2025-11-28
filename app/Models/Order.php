@@ -28,6 +28,7 @@ class Order extends Model
         'address_id',
         'total_price',
         'status',
+        'comment'
     ];
 
     public $timestamps = true;

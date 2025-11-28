@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('phone'); 
             $table->string('address_text');                // строка адреса
             $table->string('apartment_number')->nullable();      // номер кв
-            $table->string('doorphone');                   // домофон
-            $table->string('entrance');                 // подьезд
-            $table->string('floor');                 // этаж
+            $table->string('doorphone')->nullable();                   // домофон
+            $table->string('entrance')->nullable();                // подьезд
+            $table->string('floor')->nullable();                 // этаж
         });
     }
 
